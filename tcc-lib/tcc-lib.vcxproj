@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\tcc-vs\lib\alloca86_64-bt.S" />
+    <None Include="..\tcc-vs\lib\alloca86_64bt.S" />
     <None Include="..\tcc-vs\lib\alloca86_64.S" />
     <None Include="..\tcc-vs\win32\lib\chkstk.S" />
   </ItemGroup>
