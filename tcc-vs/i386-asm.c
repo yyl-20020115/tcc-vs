@@ -250,6 +250,8 @@ static const uint16_t op0_codes[] = {
 #else
 # include "i386-asm.h"
 #endif
+    /* last operation */
+    0,
 };
 
 static inline int get_reg_shift(TCCState *s1)

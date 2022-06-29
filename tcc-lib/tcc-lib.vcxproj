@@ -27,11 +27,9 @@
     <ClCompile Include="..\tcc-vs\lib\bcheck.c" />
     <ClCompile Include="..\tcc-vs\lib\libtcc1.c" />
     <ClCompile Include="..\tcc-vs\win32\lib\crt1.c" />
-    <ClCompile Include="..\tcc-vs\win32\lib\crt1w.c" />
     <ClCompile Include="..\tcc-vs\win32\lib\dllcrt1.c" />
     <ClCompile Include="..\tcc-vs\win32\lib\dllmain.c" />
     <ClCompile Include="..\tcc-vs\win32\lib\wincrt1.c" />
-    <ClCompile Include="..\tcc-vs\win32\lib\wincrt1w.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\tcc-vs\config.h" />
@@ -46,6 +44,7 @@
     <ProjectGuid>{120b52df-fa4c-4edb-adce-fc82eab7df08}</ProjectGuid>
     <RootNamespace>tcclib</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>tcc1-lib</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

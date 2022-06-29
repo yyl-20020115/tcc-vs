@@ -26,22 +26,16 @@
     <ClCompile Include="..\tcc-vs\lib\libtcc1.c">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\tcc-vs\win32\lib\crt1.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\tcc-vs\win32\lib\crt1w.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="..\tcc-vs\win32\lib\dllcrt1.c">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\tcc-vs\win32\lib\dllmain.c">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\tcc-vs\win32\lib\wincrt1.c">
+    <ClCompile Include="..\tcc-vs\win32\lib\crt1.c">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\tcc-vs\win32\lib\wincrt1w.c">
+    <ClCompile Include="..\tcc-vs\win32\lib\wincrt1.c">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

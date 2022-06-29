@@ -35,9 +35,9 @@
 #endif
 
 /* #define BOUND_DEBUG */
-
+#define BOUND_DEBUG
 #ifdef BOUND_DEBUG
- #define dprintf(a ...) fprintf(a)
+#define dprintf(a) fprintf a
 #else
  #define dprintf(a )
 #endif
@@ -183,8 +183,8 @@ void * FASTCALL __bound_ptr_add(void *p, size_t offset)
     size_t addr = (size_t)p;
     BoundEntry *e;
 
-    dprintf(stderr, "%s %s: %p %x\n",
-        __FILE__, __FUNCTION__, p, (unsigned)offset);
+    dprintf((stderr, "%s %s: %p %x\n",
+        __FILE__, __FUNCTION__, p, (unsigned)offset));
 
     __bound_init();
 
@@ -214,8 +214,8 @@ void * FASTCALL __bound_ptr_indir##dsize (void *p, size_t offset)     \
     size_t addr = (size_t)p;                                            \
     BoundEntry *e;                                                      \
                                                                         \
-    dprintf(stderr, "%s %s: %p %x start\n",                             \
-        __FILE__, __FUNCTION__, p, (unsigned)offset);	                \
+    dprintf((stderr, "%s %s: %p %x start\n",                             \
+        __FILE__, __FUNCTION__, p, (unsigned)offset));	                \
 									\
     __bound_init();							\
     e = __bound_t1[addr >> (BOUND_T2_BITS + BOUND_T3_BITS)];            \
@@ -233,8 +233,8 @@ void * FASTCALL __bound_ptr_indir##dsize (void *p, size_t offset)     \
             __FILE__, __FUNCTION__, (char*)p + offset);                        \
         return INVALID_POINTER; /* return an invalid pointer */         \
     }									\
-    dprintf(stderr, "%s %s: return p+offset = %p\n",                    \
-        __FILE__, __FUNCTION__, (char*)p + offset);                            \
+    dprintf((stderr, "%s %s: return p+offset = %p\n",                    \
+        __FILE__, __FUNCTION__, (char*)p + offset));                            \
     return ((char*)p + offset);                                                  \
 }
 
@@ -265,7 +265,7 @@ void FASTCALL __bound_local_new(void *p1)
 {
     size_t addr, size, fp, *p = p1;
 
-    dprintf(stderr, "%s, %s start p1=%p\n", __FILE__, __FUNCTION__, p);
+    dprintf((stderr, "%s, %s start p1=%p\n", __FILE__, __FUNCTION__, p));
     GET_CALLER_FP(fp);
     for(;;) {
         addr = p[0];
@@ -276,7 +276,7 @@ void FASTCALL __bound_local_new(void *p1)
         p += 2;
         __bound_new_region((void *)addr, size);
     }
-    dprintf(stderr, "%s, %s end\n", __FILE__, __FUNCTION__);
+    dprintf((stderr, "%s, %s end\n", __FILE__, __FUNCTION__));
 }
 
 /* called when leaving a function to delete all the local regions */
@@ -408,7 +408,7 @@ void __bound_init(void)
 
     inited = 1;
 
-    dprintf(stderr, "%s, %s() start\n", __FILE__, __FUNCTION__);
+    dprintf((stderr, "%s, %s() start\n", __FILE__, __FUNCTION__));
 
     /* save malloc hooks and install bound check hooks */
     install_malloc_hooks();
@@ -477,7 +477,7 @@ void __bound_init(void)
         p += 2;
     }
 
-    dprintf(stderr, "%s, %s() end\n\n", __FILE__, __FUNCTION__);
+    dprintf((stderr, "%s, %s() end\n\n", __FILE__, __FUNCTION__));
 }
 
 void __bound_main_arg(void **p)
@@ -485,15 +485,15 @@ void __bound_main_arg(void **p)
     void *start = p;
     while (*p++);
 
-    dprintf(stderr, "%s, %s calling __bound_new_region(%p %x)\n",
-            __FILE__, __FUNCTION__, start, (unsigned)((void *)p - start));
+    dprintf( (stderr, "%s, %s calling __bound_new_region(%p %p)\n",
+            __FILE__, __FUNCTION__, start, ((void *)((char*)*p - (char*)start))) );
 
-    __bound_new_region(start, (void *) ((char*)p - start));
+    __bound_new_region(start, (size_t)(void *) ((char*)*p - (char*)start));
 }
 
 void __bound_exit(void)
 {
-    dprintf(stderr, "%s, %s()\n", __FILE__, __FUNCTION__);
+    dprintf((stderr, "%s, %s()\n", __FILE__, __FUNCTION__));
     restore_malloc_hooks();
 }
 
@@ -524,8 +524,8 @@ void __bound_new_region(void *p, size_t size)
     BoundEntry *page, *e, *e2;
     size_t t1_start, t1_end, i, t2_start, t2_end;
 
-    dprintf(stderr, "%s, %s(%p, %x) start\n",
-        __FILE__, __FUNCTION__, p, (unsigned)size);
+    dprintf((stderr, "%s, %s(%p, %x) start\n",
+        __FILE__, __FUNCTION__, p, (unsigned)size));
 
     __bound_init();
 
@@ -583,7 +583,7 @@ void __bound_new_region(void *p, size_t size)
         add_region(e, start, size);
     }
 
-    dprintf(stderr, "%s, %s end\n", __FILE__, __FUNCTION__);
+    dprintf((stderr, "%s, %s end\n", __FILE__, __FUNCTION__));
 }
 
 /* delete a region */
@@ -635,7 +635,7 @@ int __bound_delete_region(void *p)
     BoundEntry *page, *e, *e2;
     size_t t1_start, t1_end, t2_start, t2_end, i;
 
-    dprintf(stderr, "%s %s() start\n", __FILE__, __FUNCTION__);
+    dprintf((stderr, "%s %s() start\n", __FILE__, __FUNCTION__));
 
     __bound_init();
 
@@ -706,7 +706,7 @@ int __bound_delete_region(void *p)
         delete_region(e, p, empty_size);
     }
 
-    dprintf(stderr, "%s %s() end\n", __FILE__, __FUNCTION__);
+    dprintf((stderr, "%s %s() end\n", __FILE__, __FUNCTION__));
 
     return 0;
 }
@@ -794,8 +794,8 @@ void *__bound_malloc(size_t size, const void *caller)
     if (!ptr)
         return NULL;
 
-    dprintf(stderr, "%s, %s calling __bound_new_region(%p, %x)\n",
-           __FILE__, __FUNCTION__, ptr, (unsigned)size);
+    dprintf((stderr, "%s, %s calling __bound_new_region(%p, %x)\n",
+           __FILE__, __FUNCTION__, ptr, (unsigned)size));
 
     __bound_new_region(ptr, size);
     return ptr;
@@ -827,8 +827,8 @@ void *__bound_memalign(size_t size, size_t align, const void *caller)
     if (!ptr)
         return NULL;
 
-    dprintf(stderr, "%s, %s calling __bound_new_region(%p, %x)\n",
-           __FILE__, __FUNCTION__, ptr, (unsigned)size);
+    dprintf((stderr, "%s, %s calling __bound_new_region(%p, %x)\n",
+           __FILE__, __FUNCTION__, ptr, (unsigned)size));
 
     __bound_new_region(ptr, size);
     return ptr;
@@ -921,18 +921,18 @@ void *__bound_memcpy(void *dst, const void *src, size_t size)
 {
     void* p;
 
-    dprintf(stderr, "%s %s: start, dst=%p src=%p size=%x\n",
-            __FILE__, __FUNCTION__, dst, src, (unsigned)size);
+    dprintf((stderr, "%s %s: start, dst=%p src=%p size=%x\n",
+            __FILE__, __FUNCTION__, dst, src, (unsigned)size));
 
     __bound_check(dst, size);
     __bound_check(src, size);
     /* check also region overlap */
-    if (src >= dst && src < (char*)dst + size)
+    if (src >= dst && (char*)src < (char*)dst + size)
         bound_error("overlapping regions in memcpy()");
 
     p = memcpy(dst, src, size);
 
-    dprintf(stderr, "%s %s: end, p=%p\n", __FILE__, __FUNCTION__, p);
+    dprintf((stderr, "%s %s: end, p=%p\n", __FILE__, __FUNCTION__, p));
     return p;
 }
 
@@ -952,13 +952,12 @@ void *__bound_memset(void *dst, int c, size_t size)
 /* XXX: could be optimized */
 int __bound_strlen(const char *s)
 {
-    const char *p;
-    size_t len;
-
-    len = 0;
+    const char *p = 0;
+    int len = 0;
     for(;;) {
         p = __bound_ptr_indir1((char *)s, len);
-        if (p == INVALID_POINTER)
+
+        if (p == 0 || p == INVALID_POINTER)
             bound_error("bad pointer in strlen()");
         if (*p == '\0')
             break;
@@ -972,11 +971,11 @@ char *__bound_strcpy(char *dst, const char *src)
     size_t len;
     void *p;
 
-    dprintf(stderr, "%s %s: strcpy start, dst=%p src=%p\n",
-            __FILE__, __FUNCTION__, dst, src);
+    dprintf((stderr, "%s %s: strcpy start, dst=%p src=%p\n",
+            __FILE__, __FUNCTION__, dst, src));
     len = __bound_strlen(src);
     p = __bound_memcpy(dst, src, len + 1);
-    dprintf(stderr, "%s %s: strcpy end, p = %p\n",
-            __FILE__, __FUNCTION__, p);
+    dprintf((stderr, "%s %s: strcpy end, p = %p\n",
+            __FILE__, __FUNCTION__, p));
     return p;
 }

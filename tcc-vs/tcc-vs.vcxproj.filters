@@ -110,4 +110,7 @@
       <Filter>源文件</Filter>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="libtcc1.a" />
+  </ItemGroup>
 </Project>

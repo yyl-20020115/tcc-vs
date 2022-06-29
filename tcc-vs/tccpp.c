@@ -1861,7 +1861,7 @@ ST_FUNC void preprocess(int is_bof)
             ch = file->buf_ptr[0];
             goto the_end;
         }
-        tcc_error("include file '%s' not found", buf);
+        tcc_error("include file '%s' not found (make sure include and lib directory coexist with tcc executable)", buf);
 include_done:
         break;
     case TOK_IFNDEF:
